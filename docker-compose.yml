@@ -1,4 +1,4 @@
-version: '3.8' # Menggunakan Docker Compose versi 3 (Sebenarnya ini nggak perlu untuk dan untuk vesi baru baru sudah minta untuk dihilangkan)
+version: '3.8' # Menggunakan Docker Compose versi 3 (Sebenarnya ini nggak perlu sih untuk dan untuk vesi baru baru sudah minta untuk dihilangkan)
 
 services:
   # Service untuk aplikasi utama
