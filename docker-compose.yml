@@ -1,0 +1,26 @@
+version: '3.8' # Menggunakan Docker Compose versi 3 (Sebenarnya ini nggak perlu untuk dan untuk vesi baru baru sudah minta untuk dihilangkan)
+
+services:
+  # Service untuk aplikasi utama
+  item-app:
+    image: ghcr.io/xmod3905/item-app:v1 # Menggunakan image dari GitHub Packages
+    ports:
+      - "80:8080" # Mapping port 80 host ke port aplikasi di 8080
+    depends_on:
+      - item-db # Menjamin container db jalan lebih dulu sebelum app
+    restart: always # Container akan selalu restart jika terhenti
+    environment:
+      - MONGO_URL=mongodb://item-db:27017/db_item # Contoh koneksi ke container db
+    restart: always
+
+  # Service untuk database
+  item-db:
+    image: mongo:3 # Menggunakan image MongoDB versi 3 sesuai kriteria
+    restart: always # Database akan selalu restart secara otomatis
+    volumes:
+      - app-db:/data/db # Menyimpan data database ke volume app-db
+    restart: always
+
+# Definisi volume yang digunakan secara eksternal/internal
+volumes:
+  app-db: # Membuat volume bernama app-db untuk persistensi data
