@@ -11,7 +11,6 @@ services:
     restart: always # Container akan selalu restart jika terhenti
     environment:
       - MONGO_URL=mongodb://item-db:27017/db_item # Contoh koneksi ke container db
-    restart: always
 
   # Service untuk database
   item-db:
@@ -19,7 +18,7 @@ services:
     restart: always # Database akan selalu restart secara otomatis
     volumes:
       - app-db:/data/db # Menyimpan data database ke volume app-db
-    restart: always
+
 
 # Definisi volume yang digunakan secara eksternal/internal
 volumes:
