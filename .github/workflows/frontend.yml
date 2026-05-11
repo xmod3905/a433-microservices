@@ -1,0 +1,27 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - karsajobs-ui
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 1. Langkah lint-dockerfile
+      - name: lint-dockerfile
+        run: |
+          docker pull hadolint/hadolint
+          docker run --rm -i hadolint/hadolint < Dockerfile
+
+      # 2. Langkah build-app-karsajobs-ui
+      - name: build-app-karsajobs-ui
+        run: |
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USR }}" --password-stdin
+          docker build -t ghcr.io/xmod3905/karsajobs-ui:latest .
+          docker push ghcr.io/xmod3905/karsajobs-ui:latest
