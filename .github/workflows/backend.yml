@@ -1,0 +1,38 @@
+name: Backend CI
+
+# Pipeline ini akan berjalan otomatis setiap ada 'push' ke branch karsajobs
+on:
+  push:
+    branches:
+      - karsajobs
+
+jobs:
+  build-and-deploy:
+    # Menggunakan server Ubuntu dari GitHub yang sudah terinstal Docker & Git
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 1. Langkah lint-dockerfile
+      - name: lint-dockerfile
+        run: |
+          docker pull hadolint/hadolint
+          docker run --rm -i hadolint/hadolint < Dockerfile
+
+      # 2. Langkah test-app
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      
+      - name: test-app
+        run: go test -v -short --count=1 $(go list ./...)
+
+      # 3. Langkah build-app-karsajobs
+      - name: build-app-karsajobs
+        run: |
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USR }}" --password-stdin
+          docker build -t ghcr.io/xmod3905/karsajobs:latest .
+          docker push ghcr.io/xmod3905/karsajobs:latest
