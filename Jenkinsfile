@@ -4,13 +4,13 @@ pipeline {
         GHCR_CRED = credentials('ghcr-login-secret')
     }
     stages {
-        # Stage pertama untuk mengecheck/lint docker file
+        // Stage pertama untuk mengecheck/lint docker file
         stage('lint-dockerfile') {
             steps {
                 sh 'hadolint Dockerfile'
             }
         }
-        # Stage kedua untuk build frontend app 
+        // Stage kedua untuk build frontend app kemudian menggungahnya ke github registry 
         stage('build-app-karsajobs-ui') {
             steps {
                 sh "echo \$GHCR_CRED_PSW | docker login ghcr.io -u \$GHCR_CRED_USR --password-stdin"
