@@ -7,4 +7,4 @@ docker build -t ghcr.io/xmod3905/shipping-service:latest .
 echo $TOKEN_GITHUB | docker login ghcr.io -u xmod3905 --password-stdin
 
 # Mengunggah image ke Github Packages
-docker push ghcr.io/xmod3905/order-service:latest
+docker push ghcr.io/xmod3905/shipping-service:latest
